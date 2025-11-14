@@ -1,0 +1,89 @@
+---
+import "@/styles/global.css";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// STAR-Labs Twitch Module Imports
+import StatusPanel from "@/components/twitch/modules/StatusPanel.astro";
+import GameBoxArt from "@/components/twitch/modules/GameBoxArt.astro";
+import ViewerGraph from "@/components/twitch/modules/ViewerGraph.astro";
+import LiveTerminal from "@/components/twitch/modules/LiveTerminal.astro";
+import RecentFollowers from "@/components/twitch/modules/Recent-Follower.astro";
+import ClipsPanel from "@/components/twitch/modules/ClipsPanel.astro";
+import ChatPanel from "@/components/twitch/modules/ChatPanel.astro";
+import AutoRefresh from "@/components/twitch/modules/AutoRefresh.astro";
+
+// ------------------------------------------------------
+// API Endpoints
+// ------------------------------------------------------
+const API_STATUS = "https://api.intern.phudevelopement.xyz/api/twitch/status";
+const API_FOLLOWERS = "https://api.intern.phudevelopement.xyz/api/twitch/followers";
+const API_CLIPS = "https://api.intern.phudevelopement.xyz/api/twitch/clips";
+const API_CHAT = "https://api.intern.phudevelopement.xyz/api/twitch/chat";
+
+// ------------------------------------------------------
+// Initial Data Fetch
+// ------------------------------------------------------
+async function getJSON(url) {
+  try {
+    const res = await fetch(url);
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+const status = await getJSON(API_STATUS);
+const followers = await getJSON(API_FOLLOWERS);
+const clips = await getJSON(API_CLIPS);
+const chat = await getJSON(API_CHAT);
+
+const isLive = status?.live === true;
+---
+
+<BaseLayout title="CommanderPhu – Twitch Dashboard">
+
+  <main class="min-h-screen bg-[#0b0e13] text-[#e8f1ff] pt-24 px-6 max-w-6xl mx-auto flex flex-col gap-12">
+
+    <!-- PAGE TITLE -->
+    <h1 class="text-4xl font-bold hologram text-center mb-4">
+      STAR Labs · Twitch Dashboard
+    </h1>
+
+    <!-- STATUS PANEL -->
+    <StatusPanel status={status} />
+
+    <!-- GAME BOXART (only if live) -->
+    {isLive && (
+      <GameBoxArt
+        game={status.game_name}
+        cover={status.box_art_url}
+      />
+    )}
+
+    <!-- VIEWER GRAPH -->
+    <ViewerGraph
+      live={isLive}
+      viewers={status?.viewers ?? 0}
+    />
+
+    <!-- LIVE TERMINAL -->
+    <LiveTerminal
+      live={isLive}
+      status={status}
+    />
+
+    <!-- FOLLOWERS -->
+    <RecentFollowers followers={followers} />
+
+    <!-- CLIPS -->
+    <ClipsPanel clips={clips} />
+
+    <!-- CHAT -->
+    <ChatPanel messages={chat} />
+
+    <!-- AUTOREFRESH ENGINE (NO UI, Script only) -->
+    <AutoRefresh />
+
+  </main>
+
+</BaseLayout>

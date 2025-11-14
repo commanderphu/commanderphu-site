@@ -1,0 +1,71 @@
+---
+interface ChatMessage {
+  user: string;
+  color?: string;
+  message: string;
+}
+
+interface Props {
+  messages: ChatMessage[] | null;
+}
+// ❗ Props aus Astro holen
+const { messages } = Astro.props;
+const hasData = Array.isArray(messages) && messages.length > 0;
+---
+
+<section class="star-panel p-6 rounded-xl flex flex-col gap-4">
+  <h3 class="text-xl font-semibold text-starAccent">
+    Twitch Chat — Live Feed
+  </h3>
+
+  <div
+    id="chatWindow"
+    class="h-64 overflow-auto flex flex-col gap-3 bg-[#0d1016] border border-[#1f2430] rounded-lg p-3 font-mono text-sm text-[#ccc]"
+  >
+    {hasData ? (
+      messages!.map((m) => (
+        <div class="flex gap-2">
+          <span style={`color: ${m.color || "#63a4ff"}`} class="font-bold">
+            {m.user}:
+          </span>
+          <span class="opacity-90">{m.message}</span>
+        </div>
+      ))
+    ) : (
+      <p class="opacity-60">Chat wird geladen…</p>
+    )}
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById("chatWindow");
+
+    // Auto-scroll
+    function scroll() {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    scroll();
+
+    // 🔥 Wird durch AutoRefresh gefüttert
+    window.addEventListener("chat-update", (ev) => {
+      const msg = ev.detail; // { user, color, message }
+      const line = document.createElement("div");
+      line.className = "flex gap-2";
+
+      const user = document.createElement("span");
+      user.textContent = msg.user + ":";
+      user.style.color = msg.color || "#63a4ff";
+      user.className = "font-bold";
+
+      const text = document.createElement("span");
+      text.textContent = msg.message;
+      text.className = "opacity-90";
+
+      line.appendChild(user);
+      line.appendChild(text);
+
+      chatWindow.appendChild(line);
+      scroll();
+    });
+  </script>
+</section>

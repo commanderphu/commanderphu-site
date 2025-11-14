@@ -1,0 +1,152 @@
+/* ----------------------------------------------------------
+   CORE: Tailwind v4 Import
+   ---------------------------------------------------------- */
+@import "tailwindcss";
+
+/* ----------------------------------------------------------
+   CUSTOM PROPERTIES (CSS Variables)
+   ---------------------------------------------------------- */
+@theme {
+  --color-star-bg: #0b0e13;
+  --color-star-soft: #11151d;
+  --color-star-border: #1f2430;
+  --color-star-primary: #37bdf8;
+  --color-star-accent: #6ddcff;
+  --color-star-text: #e8f1ff;
+  --color-star-danger: #ff4f6d;
+}
+
+/* ----------------------------------------------------------
+   GLOBAL RESET / BASE TYPOGRAPHY
+   ---------------------------------------------------------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--color-star-bg);
+  color: var(--color-star-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----------------------------------------------------------
+   STAR-LABS SCROLLBAR
+   ---------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-star-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-star-primary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-star-accent);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-star-primary) var(--color-star-soft);
+}
+
+/* ----------------------------------------------------------
+   GLOBAL LINK STYLING
+   ---------------------------------------------------------- */
+a {
+  color: var(--color-star-accent);
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-star-primary);
+  text-shadow: 0 0 8px rgba(55, 189, 248, 0.7);
+}
+
+/* ----------------------------------------------------------
+   STAR-LABS PANEL STYLE
+   ---------------------------------------------------------- */
+.star-panel {
+  background: rgba(17, 21, 29, 0.75);
+  border: 1px solid var(--color-star-border);
+  padding: 1.5rem;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 25px rgba(55, 189, 248, 0.18);
+  transition: all 0.25s ease;
+}
+
+.star-panel:hover {
+  box-shadow: 0 0 35px rgba(55, 189, 248, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ----------------------------------------------------------
+   STAR-LABS GLOW UTILITIES
+   ---------------------------------------------------------- */
+.glow {
+  box-shadow: 0 0 20px rgba(55, 189, 248, 0.25);
+}
+
+.glow-strong {
+  box-shadow: 0 0 35px rgba(55, 189, 248, 0.45);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(55, 189, 248, 0.2);
+}
+
+/* ----------------------------------------------------------
+   HOLOGRAM ANIMATION
+   ---------------------------------------------------------- */
+@keyframes holoPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 12px rgba(55, 189, 248, 0.7);
+  }
+}
+
+.hologram {
+  animation: holoPulse 2.4s infinite ease-in-out;
+}
+
+/* ----------------------------------------------------------
+   FLASH GLOW (Commander Branding)
+   ---------------------------------------------------------- */
+.flash-glow {
+  text-shadow: 
+    0 0 15px rgba(255, 210, 64, 0.8),
+    0 0 30px rgba(255, 180, 30, 0.4);
+}
+
+/* ----------------------------------------------------------
+   UTILITY CLASSES
+   ---------------------------------------------------------- */
+.grid-gap {
+  gap: 2rem;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-star-primary);
+  color: var(--color-star-bg);
+}
+
+::-moz-selection {
+  background: var(--color-star-primary);
+  color: var(--color-star-bg);
+}

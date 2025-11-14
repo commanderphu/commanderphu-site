@@ -1,0 +1,188 @@
+---
+import "@/styles/global.css";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// ✔ Richtige Icons aus @lucide/astro
+import {
+  Terminal,
+  MessageCircle,
+  MessageCircleOff,
+  MessageCircleQuestionMark,
+  Music,
+  Bolt,
+  Zap,
+  Sparkles,
+  Cpu,
+  Snowflake,
+  Eye,
+  Sword,
+  Building2,
+  Shirt,
+  HandMetal,
+  Search
+} from "@lucide/astro";
+
+// Commands
+const commands = [
+  { cmd: "!ping", desc: "Healthcheck.", category: "Basic", icon: "terminal" },
+  { cmd: "!uptime", desc: "Wie lange der Stream läuft.", category: "Basic", icon: "terminal" },
+  { cmd: "!discord", desc: "Discord-Link anzeigen.", category: "Basic", icon: "message-circle-off" },
+  { cmd: "!lurk", desc: "Setzt dich in den Lurk-Modus.", category: "Basic", icon: "message-circle" },
+  { cmd: "!commands", desc: "Zeigt alle Befehle.", category: "Basic", icon: "terminal" },
+  { cmd: "!help", desc: "Öffnet das Hilfesystem.", category: "Basic", icon: "message-circle-question-mark" },
+
+  { cmd: "!song", desc: "Spotify Now Playing.", category: "Music", icon: "music" },
+
+  { cmd: "!flash", desc: "Barry Allen Modus.", category: "Flash", icon: "bolt" },
+  { cmd: "!speedforce", desc: "Speedforce Zitate.", category: "Flash", icon: "zap" },
+  { cmd: "!gideon", desc: "Ruft Gideon.", category: "Flash", icon: "sparkles" },
+  { cmd: "!timeline", desc: "Zeitlinien & Anomalien.", category: "Flash", icon: "zap" },
+  { cmd: "!reverseflash", desc: "Eobard Thawne spricht.", category: "Flash", icon: "zap" },
+  { cmd: "!run", desc: "RUN BARRY RUN!", category: "Flash", icon: "zap" },
+  { cmd: "!cisco", desc: "Cisco gibt Tech-Quotes.", category: "Flash", icon: "cpu" },
+  { cmd: "!caitlin", desc: "Caitlin/Frost.", category: "Flash", icon: "snowflake" },
+  { cmd: "!zoom", desc: "Zoom beobachtet dich.", category: "Flash", icon: "eye" },
+  { cmd: "!savitar", desc: "Savitar spricht.", category: "Flash", icon: "sword" },
+  { cmd: "!starlabs", desc: "STAR Labs Meldung.", category: "Flash", icon: "building-2" },
+  { cmd: "!phu", desc: "CommanderPhu – Koblenzer Flash.", category: "Flash", icon: "bolt" },
+  { cmd: "!suit", desc: "Random Flash Suit.", category: "Flash", icon: "shirt" },
+
+  { cmd: "!ec", desc: "Electric Callboy Modus.", category: "Fun", icon: "hand-metal" },
+];
+
+const categories = [...new Set(commands.map(c => c.category))];
+---
+
+<style>
+  /* Highlight Animation */
+  .cmd-highlight {
+    animation: cmdPulse 1.6s ease-out forwards;
+    border: 1px solid #ff9100 !important;
+    box-shadow: 0 0 20px #ff910070 !important;
+  }
+
+  @keyframes cmdPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    20% { transform: scale(1.03); opacity: 1; }
+    60% { transform: scale(1.01); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>
+
+<BaseLayout title="CommanderPhu – Commands">
+  <main class="min-h-screen bg-[#0b0e13] text-[#e8f1ff] pt-24 px-6 max-w-5xl mx-auto flex flex-col gap-10">
+
+    <h1 class="text-4xl font-bold hologram text-center">Twitch Commands</h1>
+
+    <!-- SEARCH -->
+    <div class="flex items-center gap-3 bg-[#11151d] rounded-xl px-4 py-3 border border-[#1f2430]">
+      <Search class="w-5 h-5 opacity-70" />
+      <input
+        id="search"
+        placeholder="Nach Commands suchen..."
+        class="bg-transparent w-full outline-none placeholder-white/40"
+      />
+    </div>
+
+    <!-- TABS -->
+    <div class="flex flex-wrap gap-3">
+      {["Alle", ...categories].map((cat) => (
+        <button
+          class="tab-btn bg-[#11151d] hover:bg-[#161b25] border border-[#1f2430] px-4 py-2 rounded-lg transition"
+          data-category={cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- COMMAND LIST -->
+    <div id="cmd-list" class="grid gap-6">
+      {commands.map((c) => (
+        <div
+          class="star-panel p-4 rounded-xl flex flex-col gap-2 cmd-item"
+          data-category={c.category}
+          data-cmd={c.cmd.toLowerCase()}
+        >
+          <div class="flex items-center gap-3">
+            {
+              c.icon === "terminal" ? <Terminal class="w-6 h-6 text-starAccent" /> :
+              c.icon === "message-circle" ? <MessageCircle class="w-6 h-6 text-starAccent" /> :
+              c.icon === "message-circle-off" ? <MessageCircleOff class="w-6 h-6 text-starAccent" /> :
+              c.icon === "message-circle-question-mark" ? <MessageCircleQuestionMark class="w-6 h-6 text-starAccent" /> :
+
+              c.icon === "music" ? <Music class="w-6 h-6 text-starAccent" /> :
+
+              c.icon === "bolt" ? <Bolt class="w-6 h-6 text-starAccent" /> :
+              c.icon === "zap" ? <Zap class="w-6 h-6 text-starAccent" /> :
+              c.icon === "sparkles" ? <Sparkles class="w-6 h-6 text-starAccent" /> :
+              c.icon === "cpu" ? <Cpu class="w-6 h-6 text-starAccent" /> :
+              c.icon === "snowflake" ? <Snowflake class="w-6 h-6 text-starAccent" /> :
+              c.icon === "eye" ? <Eye class="w-6 h-6 text-starAccent" /> :
+              c.icon === "sword" ? <Sword class="w-6 h-6 text-starAccent" /> :
+              c.icon === "building-2" ? <Building2 class="w-6 h-6 text-starAccent" /> :
+              c.icon === "shirt" ? <Shirt class="w-6 h-6 text-starAccent" /> :
+              c.icon === "hand-metal" ? <HandMetal class="w-6 h-6 text-starAccent" /> :
+
+              null
+            }
+
+            <h2 class="text-xl font-semibold text-starAccent">{c.cmd}</h2>
+          </div>
+
+          <p class="opacity-80">{c.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- LOGIK -->
+    <script>
+      const search = document.getElementById("search");
+      const items = document.querySelectorAll(".cmd-item");
+      const tabs = document.querySelectorAll(".tab-btn");
+
+      let activeCategory = "Alle";
+
+      // SEARCH FILTER
+      search.addEventListener("input", () => {
+        const q = search.value.toLowerCase();
+        items.forEach((el) => {
+          const matchesText = el.dataset.cmd.includes(q);
+          const matchesCat = activeCategory === "Alle" || el.dataset.category === activeCategory;
+          el.style.display = matchesText && matchesCat ? "" : "none";
+        });
+      });
+
+      // CATEGORY TABS
+      tabs.forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.dataset.category;
+          tabs.forEach(t => t.classList.remove("ring", "ring-starAccent"));
+          btn.classList.add("ring", "ring-starAccent");
+          search.dispatchEvent(new Event("input"));
+        });
+      });
+
+      // URL HIGHLIGHT (commands?name=!flash)
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get("name");
+
+      if (name) {
+        const normalized = name.toLowerCase();
+        const target = document.querySelector(`.cmd-item[data-cmd="${normalized}"]`);
+
+        if (target) {
+          setTimeout(() => {
+            target.classList.add("cmd-highlight");
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+
+            setTimeout(() => {
+              target.classList.remove("cmd-highlight");
+            }, 3000);
+          }, 150);
+        }
+      }
+    </script>
+
+  </main>
+</BaseLayout>

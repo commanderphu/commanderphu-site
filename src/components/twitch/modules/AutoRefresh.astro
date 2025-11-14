@@ -1,0 +1,91 @@
+---
+const API_STATUS = "https://api.intern.phudevelopement.xyz/api/twitch/status";
+const API_CHAT = "https://api.intern.phudevelopement.xyz/api/twitch/chat";
+
+// Refresh alle 30 Sekunden
+const INTERVAL = 30000; 
+---
+
+<script>
+// -------------------------------------------------------
+// STAR LABS AUTORUN REFRESH ENGINE
+// -------------------------------------------------------
+
+let lastState = {
+  live: null,
+  title: null,
+  game: null,
+  viewers: null
+};
+
+async function fetchJSON(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function tick() {
+  // STATUS LADEN
+  const status = await fetchJSON("{{ API_STATUS }}");
+
+  if (status) {
+    // 1. Live change
+    if (lastState.live === false && status.live === true) {
+      window.dispatchEvent(new CustomEvent("stream-online"));
+    }
+    if (lastState.live === true && status.live === false) {
+      window.dispatchEvent(new CustomEvent("stream-offline"));
+    }
+
+    // 2. Title change
+    if (lastState.title && lastState.title !== status.title) {
+      window.dispatchEvent(
+        new CustomEvent("stream-title-change", { detail: status.title })
+      );
+    }
+
+    // 3. Game change
+    if (lastState.game && lastState.game !== status.game_name) {
+      window.dispatchEvent(
+        new CustomEvent("stream-game-change", { detail: status.game_name })
+      );
+    }
+
+    // 4. Viewer update
+    if (status.viewers !== undefined && status.viewers !== lastState.viewers) {
+      window.dispatchEvent(
+        new CustomEvent("viewer-update", { detail: status.viewers })
+      );
+    }
+
+    // Update internal state
+    lastState.live = status.live;
+    lastState.title = status.title;
+    lastState.game = status.game_name;
+    lastState.viewers = status.viewers;
+  }
+
+  // -------------------------------------------------------
+  // CHAT LADEN
+  // -------------------------------------------------------
+  const chat = await fetchJSON("{{ API_CHAT }}");
+
+  if (Array.isArray(chat)) {
+    chat.forEach((msg) => {
+      window.dispatchEvent(
+        new CustomEvent("chat-update", { detail: msg })
+      );
+    });
+  }
+}
+
+// -------------------------------------------------------
+// Start loop
+// -------------------------------------------------------
+tick();
+setInterval(tick, {{ INTERVAL }});
+</script>

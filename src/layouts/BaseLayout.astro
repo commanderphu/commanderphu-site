@@ -1,0 +1,23 @@
+---
+const { title = "CommanderPhu" } = Astro.props;
+import "@/styles/global.css";
+import GlobalNav from "@/components/GlobalNav.astro";
+---
+
+<html lang="de" class="min-h-screen bg-[#0b0e13] text-[#e8f1ff]">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+  </head>
+
+  <body class="min-h-screen">
+    <!-- NAVIGATION -->
+    <GlobalNav />
+
+    <!-- CONTENT -->
+    <main class="pt-24 min-h-screen w-full">
+  <slot />
+</main>
+
+  </body>
+</html>

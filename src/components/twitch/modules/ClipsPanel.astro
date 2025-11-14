@@ -1,0 +1,50 @@
+---
+interface Clip {
+  id: string;
+  title: string;
+  url: string;
+  thumbnail: string | null;
+  creator: string;
+  created_at: string;
+}
+
+interface Props {
+  clips: Clip[] | null;
+}
+
+// ❗ WICHTIG: Props laden
+const { clips } = Astro.props;
+
+const hasData = Array.isArray(clips) && clips.length > 0;
+---
+
+<section class="star-panel p-6 rounded-xl flex flex-col gap-4">
+  <h3 class="text-xl font-semibold text-starAccent">
+    Clips der letzten Tage
+  </h3>
+
+  {hasData ? (
+    <div class="grid gap-4 md:grid-cols-2">
+      {clips!.map((clip) => (
+        <a
+          href={clip.url}
+          target="_blank"
+          class="star-panel p-4 rounded-lg flex flex-col gap-3 hover:bg-[#161b25] transition border border-[#1f2430]"
+        >
+          <img
+            src={clip.thumbnail ?? "/fallback-clip.jpg"}
+            alt={clip.title}
+            class="w-full h-40 object-cover rounded-md"
+          />
+
+          <h4 class="font-semibold line-clamp-2">{clip.title}</h4>
+          <p class="text-xs opacity-70">
+            von {clip.creator} · {new Date(clip.created_at).toLocaleString()}
+          </p>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="opacity-50 text-sm">Keine Clips geladen.</p>
+  )}
+</section>

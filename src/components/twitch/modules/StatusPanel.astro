@@ -1,0 +1,44 @@
+---
+const { status } = Astro.props;
+const isLive = status?.live === true;
+---
+<div class="star-panel p-6 rounded-xl flex flex-col gap-4">
+  <div class="flex items-center gap-4">
+
+    <img
+      src={status?.avatar ?? "/fallback-avatar.png"}
+      alt="Avatar"
+      class="w-16 h-16 rounded-full border-2 border-starAccent object-cover"
+    />
+
+    <div>
+      <h2 class="text-2xl font-semibold">
+        {status?.username ?? "CommanderPhu"}
+      </h2>
+
+      {isLive ? (
+        <span class="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/40 rounded-md text-sm mt-1">
+          🔴 LIVE
+        </span>
+      ) : (
+        <span class="px-3 py-1 bg-gray-500/30 text-gray-300 border border-gray-500/40 rounded-md text-sm mt-1">
+          ⚫ OFFLINE
+        </span>
+      )}
+    </div>
+  </div>
+
+  {isLive && (
+    <>
+      <p class="text-lg font-semibold mt-2">{status.title}</p>
+
+      <p class="opacity-80 text-sm">
+        <strong>Kategorie:</strong> {status.game_name}
+      </p>
+
+      <p class="opacity-80 text-sm">
+        <strong>Zuschauer:</strong> {status.viewers}
+      </p>
+    </>
+  )}
+</div>

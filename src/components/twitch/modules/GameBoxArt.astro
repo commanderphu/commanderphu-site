@@ -1,0 +1,47 @@
+---
+interface Props {
+  game: string | null;
+  cover: string | null; // Twitch box_art_url
+}
+
+// Twitch liefert Cover-URL mit {width}x{height} → ersetzen
+const coverUrl = cover
+  ? cover.replace("{width}", "600").replace("{height}", "800")
+  : null;
+---
+
+{game && (
+  <section class="star-panel p-6 rounded-xl flex gap-6 items-center">
+    <!-- COVER -->
+    <div class="relative">
+      <img
+        src={coverUrl ?? "/fallback-game.png"}
+        alt={game}
+        class="w-32 h-44 rounded-lg object-cover shadow-lg border border-starAccent"
+        loading="lazy"
+      />
+
+      <!-- Glow Effekt -->
+      <div class="absolute inset-0 -z-10 blur-xl bg-starAccent/20"></div>
+    </div>
+
+    <!-- GAME INFO -->
+    <div class="flex flex-col gap-2">
+      <h3 class="text-2xl font-bold text-starAccent">
+        {game}
+      </h3>
+
+      <p class="opacity-75 text-sm max-w-md">
+        Aktuell gespieltes Spiel · Daten über Twitch API geladen
+      </p>
+
+      <a
+        href={`https://www.twitch.tv/directory/game/${encodeURIComponent(game)}`}
+        target="_blank"
+        class="inline-block mt-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition"
+      >
+        Spiel auf Twitch ansehen
+      </a>
+    </div>
+  </section>
+)}

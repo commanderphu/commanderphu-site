@@ -1,0 +1,44 @@
+---
+interface Follower {
+  username: string;
+  avatar: string | null;
+  followed_at: string;
+}
+
+interface Props {
+  followers: Follower[] | null;
+}
+
+// ❗ Props aus Astro holen (hat gefehlt!)
+const { followers } = Astro.props;
+
+const hasData = Array.isArray(followers) && followers.length > 0;
+---
+
+<section class="star-panel p-6 rounded-xl flex flex-col gap-4">
+  <h3 class="text-xl font-semibold text-starAccent">
+    Neueste Follower
+  </h3>
+
+  {hasData ? (
+    <ul class="flex flex-col gap-4">
+      {followers!.map((follower) => (
+        <li class="flex items-center gap-4">
+          <img
+            src={follower.avatar ?? "/fallback-avatar.png"}
+            class="w-10 h-10 rounded-full border border-starAccent object-cover"
+            alt={follower.username}
+          />
+          <div class="flex flex-col">
+            <span class="font-semibold">{follower.username}</span>
+            <span class="text-xs opacity-60">
+              {new Date(follower.followed_at).toLocaleString()}
+            </span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="opacity-50 text-sm">Keine Follower-Daten geladen.</p>
+  )}
+</section>

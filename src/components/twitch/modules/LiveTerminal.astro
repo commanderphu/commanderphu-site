@@ -1,0 +1,66 @@
+---
+
+const { status } = Astro.props;
+
+const firstLoadMessage = status?.live
+  ? "🔴 Stream erkannt – Live-Daten werden geladen ..."
+  : "⚫ Stream offline – Warte auf Live-Signal ...";
+---
+
+<section class="star-panel p-6 rounded-xl flex flex-col gap-3">
+  <h3 class="text-xl font-semibold text-starAccent">
+    STAR Labs — Live Telemetrie
+  </h3>
+
+  <!-- TERMINAL WINDOW -->
+  <div
+    id="liveTerminal"
+    class="bg-[#0d1016] border border-[#1f2430] rounded-md p-3 h-48 overflow-auto font-mono text-sm text-[#9ab]"
+  >
+    <div class="opacity-70">[{new Date().toLocaleTimeString()}] {firstLoadMessage}</div>
+  </div>
+
+  <p class="opacity-60 text-xs">
+    Livestream-Ereignisse werden in Echtzeit protokolliert.
+  </p>
+
+  <script>
+    const term = document.getElementById("liveTerminal");
+
+    function logLine(msg) {
+      const el = document.createElement("div");
+      el.textContent = "[" + new Date().toLocaleTimeString() + "] " + msg;
+      term.appendChild(el);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    // -------------------------------
+    // 🔥 Event Listener vom AutoRefresh Modul
+    // -------------------------------
+
+    // Viewer-Änderung
+    window.addEventListener("viewer-update", (ev) => {
+      logLine("Zuschauerzahl: " + ev.detail);
+    });
+
+    // Stream wird online
+    window.addEventListener("stream-online", () => {
+      logLine("🔴 Stream START erkannt!");
+    });
+
+    // Stream wird offline
+    window.addEventListener("stream-offline", () => {
+      logLine("⚫ Stream OFFLINE.");
+    });
+
+    // Titeländerung
+    window.addEventListener("stream-title-change", (ev) => {
+      logLine("Titel geändert zu: " + ev.detail);
+    });
+
+    // Kategorieänderung
+    window.addEventListener("stream-game-change", (ev) => {
+      logLine("Kategorie geändert zu: " + ev.detail);
+    });
+  </script>
+</section>

@@ -1,0 +1,60 @@
+---
+const { viewers } = Astro.props;
+const initialViewers = Number(viewers ?? 0);
+---
+
+<section class="star-panel p-6 rounded-xl flex flex-col gap-4">
+  <h3 class="text-xl font-semibold text-starAccent">Live Zuschauer-Graph</h3>
+
+  <canvas id="viewerGraph" width="600" height="200" class="rounded-lg"></canvas>
+
+  <p class="opacity-75 text-sm">
+    Echtzeit-Tracking der Live-Zuschauer · Aktualisiert durch AutoRefresh
+  </p>
+
+  <script>
+    const canvas = document.getElementById("viewerGraph");
+    const ctx = canvas.getContext("2d");
+
+    let data = [];
+    const maxPoints = 50;
+
+    function addPoint(v) {
+      data.push(Number(v));
+      if (data.length > maxPoints) data.shift();
+    }
+
+    // Startwert setzen
+    addPoint({initialViewers});
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const max = Math.max(...data, 1);
+
+      ctx.strokeStyle = "#ff9100";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      const step = canvas.width / (data.length - 1 || 1);
+
+      data.forEach((v, i) => {
+        const x = i * step;
+        const y = canvas.height - (v / max) * canvas.height;
+
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      ctx.stroke();
+    }
+
+    draw();
+
+    // Eventlistener für neue Werte
+    window.addEventListener("viewer-update", (ev) => {
+      addPoint(ev.detail);
+      draw();
+    });
+  </script>
+</section>
