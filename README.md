@@ -1,46 +1,138 @@
-# Astro Starter Kit: Basics
+# 🧪 CommanderPhu — Twitch & Creator Website  
+*Flash-inspired. Tech-driven. Powered by Astro.*
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Astro-252548?style=for-the-badge&logo=astro&logoColor=FDFDFD" />
+  <img src="https://img.shields.io/badge/TailwindCSS-0f172a?style=for-the-badge&logo=tailwindcss&logoColor=38bdf8" />
+  <img src="https://img.shields.io/badge/Docker-001e2b?style=for-the-badge&logo=docker&logoColor=1ea7e1" />
+  <img src="https://img.shields.io/badge/Twitch-0d0d14?style=for-the-badge&logo=twitch&logoColor=cb7fff" />
+  <img src="https://img.shields.io/badge/Spotify-0d1f0a?style=for-the-badge&logo=spotify&logoColor=1db954" />
+  <img src="https://img.shields.io/badge/TypeScript-1e293b?style=for-the-badge&logo=typescript&logoColor=4aaeff" />
+</p>
+
+---
+
+## ✨ Features
+
+### 🎥 Twitch Integration
+- Live Player (Embed)
+- Live Status Panel  
+- Twitch Chat Embed  
+- Commander Commands Panel  
+- Live Online/Offline Detection
+
+### 🎧 Spotify Integration
+- Now Playing Anzeige  
+- Album Art  
+- Live Refresh  
+- Anbindung an phu-api-hub v2
+
+### 🎛 UI + Design
+- Flash/STAR Labs inspiriertes Interface  
+- Neon/Hologram Effekte  
+- Global Navigation  
+- Neues Layoutsystem (BaseLayout)  
+- Strukturierte Styles unter `src/styles/`
+
+---
+
+## 📁 Projektstruktur
+
+```
+src/
+├── components/
+│   ├── GlobalNav.astro
+│   ├── Welcome.astro
+│   └── twitch/
+│       ├── TwitchPlayer.astro
+│       ├── TwitchChat.astro
+│       └── TwitchStatusPanel.astro
+├── layouts/
+│   └── BaseLayout.astro
+├── pages/
+│   ├── index.astro
+│   ├── twitch.astro
+│   ├── commands.astro
+│   └── spotify.astro
+└── styles/
+    ├── global.css
+    ├── hologram.css
+    └── panels.css
+```
+
+---
+
+## 🔧 Entwicklung
+
+### Setup
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm install
+pnpm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Die Seite läuft unter:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```
+http://localhost:4321
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## 🚀 Deployment
 
-All commands are run from the root of the project, from a terminal:
+Docker Build:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+```sh
+docker build -t commanderphu-site .
+```
 
-## 👀 Want to learn more?
+Docker Run:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```sh
+docker run -p 4321:4321 commanderphu-site
+```
+
+Caddy Reverse Proxy:
+
+```caddy
+commanderphu.io {
+    reverse_proxy commanderphu-site:4321
+}
+```
+
+---
+
+## 🛰 API Integration
+
+Spotify:
+```
+/v2/spotify
+```
+
+Twitch:
+```
+/v2/twitch/status
+/v2/twitch/chat
+```
+
+---
+
+## ⚡ Vision
+
+CommanderPhu ist ein Creator Command Center —  
+ein Hub für Streaming, Musik, Nerd Culture und High-Tech Design.  
+
+Geplant:
+- Realtime Dashboard  
+- Twitch Overlay  
+- Spotify WebSocket Push  
+- Auto OG-Images  
+- STAR Labs UI Effekte
+
+---
+
+## 📜 License
+
+MIT License  
+Branding © CommanderPhu
