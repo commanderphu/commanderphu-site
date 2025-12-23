@@ -1,91 +1,151 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// Fetch Twitch Avatar
+const API_STATUS = "https://api.intern.phudevelopement.xyz/twitch/";
+
+async function getJSON(url: string) {
+  try {
+    const res = await fetch(url);
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+const apiData = await getJSON(API_STATUS);
+const avatarUrl = apiData?.user?.avatar || null;
 ---
 
-<BaseLayout title="CommanderPhu ⚡ Flash Universe">
-  <div class="w-full min-h-[calc(100vh-6rem)] flex items-center justify-center px-4">
-    <div class="max-w-4xl w-full text-center space-y-8">
-      
-      <!-- Hero Section -->
-      <div class="space-y-6">
-        <h1 class="text-5xl md:text-7xl font-black leading-tight">
-          <span class="text-[#37bdf8] drop-shadow-[0_0_20px_rgba(55,189,248,0.6)] inline-block">
-            CommanderPhu
-          </span>
-          <span class="text-5xl md:text-6xl mx-3 inline-block animate-pulse">⚡</span>
-          <span class="text-[#6ddcff] drop-shadow-[0_0_20px_rgba(109,220,255,0.6)] inline-block">
-            Flash Universe
-          </span>
-        </h1>
-        
-        <p class="text-xl md:text-2xl text-[#e8f1ff]/80 max-w-2xl mx-auto font-light">
-          Twitch · Flash UI · Music · Realtime Commands
+<BaseLayout>
+  <!-- Hero Section -->
+  <section class="w-full min-h-[70vh] flex items-center justify-center px-6 py-16">
+    <div class="max-w-4xl w-full text-center space-y-8 fade-in">
+
+      <!-- Avatar -->
+      {avatarUrl && (
+        <div class="flex justify-center mb-8">
+          <img
+            src={avatarUrl}
+            alt="CommanderPhu Avatar"
+            class="w-32 h-32 rounded-full border-4 border-[#FF8C1A] object-cover shadow-lg"
+          />
+        </div>
+      )}
+
+      <h1 class="text-4xl md:text-6xl mb-6">
+        CommanderPhu
+      </h1>
+
+      <p class="text-xl md:text-2xl text-[#D1D5DB] font-light mb-4">
+        Tech Creator & IT Professional
+      </p>
+
+      <p class="text-lg text-[#9AA5B1] max-w-2xl mx-auto">
+        Building clean tech, streaming code and commanding systems.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4 justify-center mt-12">
+        <a href="https://twitch.tv/commanderphu" target="_blank" class="btn">
+          Twitch
+        </a>
+        <a href="https://kit-it-koblenz.de" target="_blank" class="btn">
+          K.I.T. Solutions
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Do -->
+  <section class="w-full px-6 py-16 bg-[#2E3440]">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl mb-8">What I Do</h2>
+
+      <ul class="space-y-4 text-lg text-[#D1D5DB]">
+        <li class="flex items-start">
+          <span class="text-[#FF8C1A] mr-3">▸</span>
+          <span>Tech Streaming (Coding, Systems, Talk)</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-[#FF8C1A] mr-3">▸</span>
+          <span>IT & Infrastructure</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-[#FF8C1A] mr-3">▸</span>
+          <span>Creator-Focused Solutions</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-[#FF8C1A] mr-3">▸</span>
+          <span>Ethical & Open Tech</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Streaming / Content -->
+  <section class="w-full px-6 py-16">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl mb-8">Streaming & Content</h2>
+
+      <div class="space-y-6 text-[#D1D5DB]">
+        <div>
+          <h3 class="text-xl text-[#F5F7FA] mb-2 uppercase tracking-wide" style="font-size: 1.1rem;">Wann ich streame</h3>
+          <p class="text-[#9AA5B1]">
+            Regelmäßig auf <a href="https://twitch.tv/commanderphu" target="_blank" class="text-[#FF8C1A] hover:text-[#ff9d3d]">Twitch</a> – primär abends und am Wochenende.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xl text-[#F5F7FA] mb-2 uppercase tracking-wide" style="font-size: 1.1rem;">Was dich erwartet</h3>
+          <p class="text-[#9AA5B1]">
+            Live-Coding, System-Setup, Tech-Talk und gelegentlich Gaming. Fokus auf Klarheit und nachhaltige Lösungen.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xl text-[#F5F7FA] mb-2 uppercase tracking-wide" style="font-size: 1.1rem;">Warum ich streame</h3>
+          <p class="text-[#9AA5B1]">
+            Um Wissen zu teilen, mit der Community zu lernen und technische Prozesse transparent zu machen.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / Philosophy -->
+  <section class="w-full px-6 py-16 bg-[#2E3440]">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl mb-8">Philosophy</h2>
+
+      <div class="space-y-6 text-[#D1D5DB]">
+        <p>
+          Ich glaube an <strong class="text-[#F5F7FA]">Klarheit statt Chaos</strong>.
+          Technik sollte ein Werkzeug sein, kein Selbstzweck.
+        </p>
+
+        <p>
+          Mein Fokus liegt auf <strong class="text-[#F5F7FA]">nachhaltiger IT</strong> –
+          Systeme, die funktionieren, wartbar sind und langfristig Sinn ergeben.
+        </p>
+
+        <p>
+          Als Gründer von <a href="https://kit-it-koblenz.de" target="_blank" class="text-[#FF8C1A] hover:text-[#ff9d3d]">K.I.T. Solutions</a>
+          entwickle ich Lösungen für Creator und kleine Teams, die auf Substanz statt auf Hype setzen.
+        </p>
+
+        <p>
+          Lernen und Teilen gehören für mich zusammen.
+          Deshalb streame ich, dokumentiere ich und bleibe offen für Dialog.
         </p>
       </div>
-
-      <!-- Quick Actions -->
-      <div class="flex flex-wrap gap-4 justify-center mt-12">
-        <a 
-          href="/twitch"
-          class="star-panel px-8 py-4 text-lg font-bold hover:text-[#37bdf8] transition-all group"
-        >
-          <span class="group-hover:scale-110 inline-block transition-transform">🎮</span> Twitch Panel
-        </a>
-        
-        <a 
-          href="/spotify"
-          class="star-panel px-8 py-4 text-lg font-bold hover:text-[#37bdf8] transition-all group"
-        >
-          <span class="group-hover:scale-110 inline-block transition-transform">🎵</span> Spotify Status
-        </a>
-
-        <a 
-          href="/commands"
-          class="star-panel px-8 py-4 text-lg font-bold hover:text-[#37bdf8] transition-all group"
-        >
-          <span class="group-hover:scale-110 inline-block transition-transform">⚙️</span> Commands
-        </a>
-
-        <a 
-          href="/status"
-          class="star-panel px-8 py-4 text-lg font-bold hover:text-[#37bdf8] transition-all group"
-        >
-          <span class="group-hover:scale-110 inline-block transition-transform">📊</span> System Status
-        </a>
-      </div>
-
-      <!-- Info Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-        
-        <!-- Card 1 -->
-        <div class="star-panel text-left">
-          <div class="text-3xl mb-3">⚡</div>
-          <h3 class="text-xl font-bold text-[#37bdf8] mb-2">Live Streaming</h3>
-          <p class="text-[#e8f1ff]/70 text-sm">
-            Folge meinen Coding-Sessions und Gaming-Streams auf Twitch
-          </p>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="star-panel text-left">
-          <div class="text-3xl mb-3">🎵</div>
-          <h3 class="text-xl font-bold text-[#37bdf8] mb-2">Music</h3>
-          <p class="text-[#e8f1ff]/70 text-sm">
-            Schau was ich gerade höre und entdecke neue Tracks
-          </p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="star-panel text-left">
-          <div class="text-3xl mb-3">🤖</div>
-          <h3 class="text-xl font-bold text-[#37bdf8] mb-2">Bot Commands</h3>
-          <p class="text-[#e8f1ff]/70 text-sm">
-            Realtime Commands für meinen Twitch-Chat Bot
-          </p>
-        </div>
-
-      </div>
-
     </div>
-  </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="w-full px-6 py-8 border-t border-[rgba(255,255,255,0.06)]">
+    <div class="max-w-4xl mx-auto text-center text-[#9AA5B1] text-sm">
+      <p>&copy; 2025 CommanderPhu · Tech Creator & IT Professional</p>
+    </div>
+  </footer>
 </BaseLayout>

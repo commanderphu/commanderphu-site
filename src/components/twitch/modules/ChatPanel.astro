@@ -13,26 +13,26 @@ const { messages } = Astro.props;
 const hasData = Array.isArray(messages) && messages.length > 0;
 ---
 
-<section class="star-panel p-6 rounded-xl flex flex-col gap-4">
-  <h3 class="text-xl font-semibold text-starAccent">
+<section class="card p-6 flex flex-col gap-4">
+  <h3 class="text-xl font-semibold text-[#F5F7FA]">
     Twitch Chat — Live Feed
   </h3>
 
   <div
     id="chatWindow"
-    class="h-64 overflow-auto flex flex-col gap-3 bg-[#0d1016] border border-[#1f2430] rounded-lg p-3 font-mono text-sm text-[#ccc]"
+    class="h-64 overflow-auto flex flex-col gap-3 bg-[#1F2933] border border-[rgba(255,255,255,0.06)] rounded-lg p-3 font-mono text-sm"
   >
     {hasData ? (
       messages!.map((m) => (
         <div class="flex gap-2">
-          <span style={`color: ${m.color || "#63a4ff"}`} class="font-bold">
+          <span style={`color: ${m.color || "#FF8C1A"}`} class="font-bold">
             {m.user}:
           </span>
-          <span class="opacity-90">{m.message}</span>
+          <span class="text-[#D1D5DB]">{m.message}</span>
         </div>
       ))
     ) : (
-      <p class="opacity-60">Chat wird geladen…</p>
+      <p class="text-[#9AA5B1] text-center">Chat-Feed nicht verfügbar. Besuche den Stream auf Twitch!</p>
     )}
   </div>
 
@@ -41,31 +41,87 @@ const hasData = Array.isArray(messages) && messages.length > 0;
 
     // Auto-scroll
     function scroll() {
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+      if (chatWindow) {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
     }
 
-    scroll();
+    // WebSocket Connection
+    const wsUrl = "wss://api.intern.phudevelopement.xyz/ws";
+    let ws = null;
 
-    // 🔥 Wird durch AutoRefresh gefüttert
-    window.addEventListener("chat-update", (ev) => {
-      const msg = ev.detail; // { user, color, message }
+    function connectWebSocket() {
+      try {
+        ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+          console.log("✅ WebSocket connected");
+          // Send ready signal
+          ws.send(JSON.stringify({ type: "overlay:ready" }));
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+
+            // Handle Twitch chat messages
+            if (data.type === "twitch:chat") {
+              addChatMessage(data.payload);
+            }
+          } catch (e) {
+            console.error("Failed to parse WebSocket message:", e);
+          }
+        };
+
+        ws.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+
+        ws.onclose = () => {
+          console.log("WebSocket disconnected. Reconnecting in 5s...");
+          setTimeout(connectWebSocket, 5000);
+        };
+      } catch (e) {
+        console.error("Failed to connect WebSocket:", e);
+      }
+    }
+
+    function addChatMessage(msg) {
+      if (!chatWindow) return;
+
+      // Clear "not available" message if present
+      const placeholder = chatWindow.querySelector("p");
+      if (placeholder) {
+        placeholder.remove();
+      }
+
       const line = document.createElement("div");
       line.className = "flex gap-2";
 
       const user = document.createElement("span");
-      user.textContent = msg.user + ":";
-      user.style.color = msg.color || "#63a4ff";
+      user.textContent = (msg.user || msg.username || "User") + ":";
+      user.style.color = msg.color || "#FF8C1A";
       user.className = "font-bold";
 
       const text = document.createElement("span");
-      text.textContent = msg.message;
-      text.className = "opacity-90";
+      text.textContent = msg.message || msg.text || "";
+      text.className = "text-[#D1D5DB]";
 
       line.appendChild(user);
       line.appendChild(text);
 
       chatWindow.appendChild(line);
+
+      // Limit to last 50 messages
+      const messages = chatWindow.querySelectorAll(".flex.gap-2");
+      if (messages.length > 50) {
+        messages[0].remove();
+      }
+
       scroll();
-    });
+    }
+
+    // Start WebSocket connection
+    connectWebSocket();
   </script>
 </section>

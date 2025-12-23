@@ -1,13 +1,20 @@
 ---
-const { title = "CommanderPhu" } = Astro.props;
+const { title = "CommanderPhu – Tech Creator & IT Professional", description = "Tech Creator, IT Professional and Founder of K.I.T. Solutions. Streaming coding, building systems and sharing clean tech." } = Astro.props;
 import "@/styles/global.css";
 import GlobalNav from "@/components/GlobalNav.astro";
 ---
 
-<html lang="de" class="min-h-screen bg-[#0b0e13] text-[#e8f1ff]">
+<html lang="de" class="min-h-screen">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@600;700;800&family=Rajdhani:wght@600&display=swap" rel="stylesheet" />
   </head>
 
   <body class="min-h-screen">
@@ -16,8 +23,7 @@ import GlobalNav from "@/components/GlobalNav.astro";
 
     <!-- CONTENT -->
     <main class="pt-24 min-h-screen w-full">
-  <slot />
-</main>
-
+      <slot />
+    </main>
   </body>
 </html>

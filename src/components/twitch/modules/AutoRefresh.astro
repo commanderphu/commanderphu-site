@@ -1,12 +1,12 @@
 ---
-const API_STATUS = "https://api.intern.phudevelopement.xyz/api/twitch/status";
-const API_CHAT = "https://api.intern.phudevelopement.xyz/api/twitch/chat";
+const API_STATUS = "https://api.intern.phudevelopement.xyz/twitch/";
+const API_CHAT = "https://api.intern.phudevelopement.xyz/twitch/chat";
 
 // Refresh alle 30 Sekunden
-const INTERVAL = 30000; 
+const INTERVAL = 30000;
 ---
 
-<script>
+<script define:vars={{ API_STATUS, API_CHAT, INTERVAL }}>
 // -------------------------------------------------------
 // STAR LABS AUTORUN REFRESH ENGINE
 // -------------------------------------------------------
@@ -30,7 +30,7 @@ async function fetchJSON(url) {
 
 async function tick() {
   // STATUS LADEN
-  const status = await fetchJSON("{{ API_STATUS }}");
+  const status = await fetchJSON(API_STATUS);
 
   if (status) {
     // 1. Live change
@@ -70,22 +70,21 @@ async function tick() {
   }
 
   // -------------------------------------------------------
-  // CHAT LADEN
+  // CHAT LADEN (currently not available in API)
   // -------------------------------------------------------
-  const chat = await fetchJSON("{{ API_CHAT }}");
-
-  if (Array.isArray(chat)) {
-    chat.forEach((msg) => {
-      window.dispatchEvent(
-        new CustomEvent("chat-update", { detail: msg })
-      );
-    });
-  }
+  // const chat = await fetchJSON(API_CHAT);
+  // if (Array.isArray(chat)) {
+  //   chat.forEach((msg) => {
+  //     window.dispatchEvent(
+  //       new CustomEvent("chat-update", { detail: msg })
+  //     );
+  //   });
+  // }
 }
 
 // -------------------------------------------------------
 // Start loop
 // -------------------------------------------------------
 tick();
-setInterval(tick, {{ INTERVAL }});
+setInterval(tick, INTERVAL);
 </script>

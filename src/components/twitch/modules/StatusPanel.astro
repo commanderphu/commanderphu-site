@@ -1,19 +1,18 @@
 ---
-const { status } = Astro.props;
-const isLive = status?.live === true;
+const { status, isLive = false, viewerCount = 0, user } = Astro.props;
 ---
-<div class="star-panel p-6 rounded-xl flex flex-col gap-4">
+<div class="card p-6 flex flex-col gap-4">
   <div class="flex items-center gap-4">
 
     <img
-      src={status?.avatar ?? "/fallback-avatar.png"}
+      src={user?.avatar ?? "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png"}
       alt="Avatar"
-      class="w-16 h-16 rounded-full border-2 border-starAccent object-cover"
+      class="w-16 h-16 rounded-full border-2 border-[#FF8C1A] object-cover"
     />
 
     <div>
-      <h2 class="text-2xl font-semibold">
-        {status?.username ?? "CommanderPhu"}
+      <h2 class="text-2xl font-semibold text-[#F5F7FA]">
+        {user?.display_name ?? "CommanderPhu"}
       </h2>
 
       {isLive ? (
@@ -30,14 +29,14 @@ const isLive = status?.live === true;
 
   {isLive && (
     <>
-      <p class="text-lg font-semibold mt-2">{status.title}</p>
+      <p class="text-lg font-semibold mt-2 text-[#F5F7FA]">{status?.title}</p>
 
-      <p class="opacity-80 text-sm">
-        <strong>Kategorie:</strong> {status.game_name}
+      <p class="text-[#D1D5DB] text-sm">
+        <strong class="text-[#F5F7FA]">Kategorie:</strong> {status?.gameName ?? status?.game_name}
       </p>
 
-      <p class="opacity-80 text-sm">
-        <strong>Zuschauer:</strong> {status.viewers}
+      <p class="text-[#D1D5DB] text-sm">
+        <strong class="text-[#F5F7FA]">Zuschauer:</strong> {viewerCount}
       </p>
     </>
   )}

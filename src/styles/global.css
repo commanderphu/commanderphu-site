@@ -5,15 +5,23 @@
 
 /* ----------------------------------------------------------
    CUSTOM PROPERTIES (CSS Variables)
+   CommanderPhu Design Guideline v1.0
    ---------------------------------------------------------- */
 @theme {
-  --color-star-bg: #0b0e13;
-  --color-star-soft: #11151d;
-  --color-star-border: #1f2430;
-  --color-star-primary: #37bdf8;
-  --color-star-accent: #6ddcff;
-  --color-star-text: #e8f1ff;
-  --color-star-danger: #ff4f6d;
+  /* Background */
+  --color-bg-primary: #1F2933;
+  --color-bg-secondary: #2E3440;
+
+  /* Text */
+  --color-text-heading: #F5F7FA;
+  --color-text-body: #D1D5DB;
+  --color-text-meta: #9AA5B1;
+
+  /* Accent */
+  --color-accent-orange: #FF8C1A;
+
+  /* Border */
+  --color-border: rgba(255, 255, 255, 0.06);
 }
 
 /* ----------------------------------------------------------
@@ -23,11 +31,20 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: var(--color-star-bg);
-  color: var(--color-star-text);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-body);
+  font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', 'Rajdhani', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-heading);
 }
 
 body {
@@ -36,117 +53,103 @@ body {
 }
 
 /* ----------------------------------------------------------
-   STAR-LABS SCROLLBAR
+   SCROLLBAR
    ---------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-star-soft);
+  background: var(--color-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-star-primary);
+  background: var(--color-accent-orange);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-star-accent);
+  background: #ff9d3d;
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-star-primary) var(--color-star-soft);
+  scrollbar-color: var(--color-accent-orange) var(--color-bg-secondary);
 }
 
 /* ----------------------------------------------------------
    GLOBAL LINK STYLING
    ---------------------------------------------------------- */
 a {
-  color: var(--color-star-accent);
+  color: var(--color-accent-orange);
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-star-primary);
-  text-shadow: 0 0 8px rgba(55, 189, 248, 0.7);
+  color: #ff9d3d;
 }
 
 /* ----------------------------------------------------------
-   STAR-LABS PANEL STYLE
+   CARD COMPONENT
    ---------------------------------------------------------- */
-.star-panel {
-  background: rgba(17, 21, 29, 0.75);
-  border: 1px solid var(--color-star-border);
+.card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
   padding: 1.5rem;
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 25px rgba(55, 189, 248, 0.18);
-  transition: all 0.25s ease;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-.star-panel:hover {
-  box-shadow: 0 0 35px rgba(55, 189, 248, 0.35);
+.card:hover {
   transform: translateY(-2px);
 }
 
 /* ----------------------------------------------------------
-   STAR-LABS GLOW UTILITIES
+   BUTTON COMPONENT
    ---------------------------------------------------------- */
-.glow {
-  box-shadow: 0 0 20px rgba(55, 189, 248, 0.25);
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-body);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-family: inherit;
 }
 
-.glow-strong {
-  box-shadow: 0 0 35px rgba(55, 189, 248, 0.45);
-}
-
-.shadow-glow {
-  box-shadow: 0 0 20px rgba(55, 189, 248, 0.2);
+.btn:hover {
+  border-color: var(--color-accent-orange);
+  color: var(--color-accent-orange);
 }
 
 /* ----------------------------------------------------------
-   HOLOGRAM ANIMATION
+   ANIMATIONS
    ---------------------------------------------------------- */
-@keyframes holoPulse {
-  0%, 100% {
-    opacity: 0.8;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  50% {
+  to {
     opacity: 1;
-    text-shadow: 0 0 12px rgba(55, 189, 248, 0.7);
   }
 }
 
-.hologram {
-  animation: holoPulse 2.4s infinite ease-in-out;
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 /* ----------------------------------------------------------
-   FLASH GLOW (Commander Branding)
+   SELECTION
    ---------------------------------------------------------- */
-.flash-glow {
-  text-shadow: 
-    0 0 15px rgba(255, 210, 64, 0.8),
-    0 0 30px rgba(255, 180, 30, 0.4);
-}
-
-/* ----------------------------------------------------------
-   UTILITY CLASSES
-   ---------------------------------------------------------- */
-.grid-gap {
-  gap: 2rem;
-}
-
-/* Selection */
 ::selection {
-  background: var(--color-star-primary);
-  color: var(--color-star-bg);
+  background: var(--color-accent-orange);
+  color: var(--color-bg-primary);
 }
 
 ::-moz-selection {
-  background: var(--color-star-primary);
-  color: var(--color-star-bg);
+  background: var(--color-accent-orange);
+  color: var(--color-bg-primary);
 }

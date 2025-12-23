@@ -15,10 +15,10 @@ import AutoRefresh from "@/components/twitch/modules/AutoRefresh.astro";
 // ------------------------------------------------------
 // API Endpoints
 // ------------------------------------------------------
-const API_STATUS = "https://api.intern.phudevelopement.xyz/api/twitch/status";
-const API_FOLLOWERS = "https://api.intern.phudevelopement.xyz/api/twitch/followers";
-const API_CLIPS = "https://api.intern.phudevelopement.xyz/api/twitch/clips";
-const API_CHAT = "https://api.intern.phudevelopement.xyz/api/twitch/chat";
+const API_STATUS = "https://api.intern.phudevelopement.xyz/twitch/";
+const API_FOLLOWERS = "https://api.intern.phudevelopement.xyz/twitch/followers";
+const API_CLIPS = "https://api.intern.phudevelopement.xyz/twitch/clips";
+const API_CHAT = "https://api.intern.phudevelopement.xyz/twitch/chat";
 
 // ------------------------------------------------------
 // Initial Data Fetch
@@ -32,12 +32,13 @@ async function getJSON(url) {
   }
 }
 
-const status = await getJSON(API_STATUS);
+const apiData = await getJSON(API_STATUS);
 const followers = await getJSON(API_FOLLOWERS);
 const clips = await getJSON(API_CLIPS);
 const chat = await getJSON(API_CHAT);
 
-const isLive = status?.live === true;
+const isLive = apiData?.online === true;
+const status = apiData?.stream || {};
 ---
 
 <BaseLayout title="CommanderPhu – Twitch Dashboard">
@@ -50,7 +51,7 @@ const isLive = status?.live === true;
     </h1>
 
     <!-- STATUS PANEL -->
-    <StatusPanel status={status} />
+    <StatusPanel status={status} isLive={isLive} viewerCount={apiData?.viewerCount} user={apiData?.user} />
 
     <!-- GAME BOXART (only if live) -->
     {isLive && (
